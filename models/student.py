@@ -22,3 +22,5 @@ def _onchange_shift_id(self):
 def _onchange_class_id(self):
         self.section_id = False
 
+
+

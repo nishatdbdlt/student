@@ -56,4 +56,11 @@ class LibraryStudentWizard(models.TransientModel):
                 ])
                 record.students_ids = students
             else:
-                record.students_ids = False
+
+
+                   record.students_ids = False
+
+    def action_print_pdf(self):
+        return self.env.ref('students.report_student_wizard_pdf').report_action(self)
+
+
