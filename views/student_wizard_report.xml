@@ -1,10 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <odoo>
-    <!-- QWeb Report Template -->
     <template id="report_student_wizard_pdf_template">
-        <t t-call="web.external_layout">
-            <div class="page">
+        <t t-call="web.html_container">
+            <t t-set="doc" t-value="docs"/>
+
+                <div class="page">
+
+                    <style>
+                        body {
+                            font-family: 'Arial', sans-serif;
+                            color: #333;
+                        }
+
+                        .report-container {
+                            padding: 20px;
+                        }
+
+                        .text-center {
+                            text-align: center;
+                        }
+
+                        .company-header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+
+                        .company-header img {
+                            height: 70px;
+                            margin-bottom: 5px;
+                        }
+
+                        .company-header h1 {
+                            font-size: 30px;
+                            margin: 5px 0;
+                        }
+
+                        .company-header p {
+                            font-size: 16px;
+                            margin: 2px 0;
+                            color: #666;
+                        }
+
+                        .section-info {
+                            text-align: center;
+                            font-size: 18px;
+                            margin: 10px 0 25px;
+                            border-top: 1px solid #ccc;
+                            border-bottom: 1px solid #ccc;
+                            padding: 10px 0;
+                            background-color: #f9f9f9;
+                        }
+
+                        .total-student {
+                            font-size: 16px;
+                            text-align: right;
+                            margin: 10px 0;
+                            font-weight: bold;
+                        }
+
+                        .student-report-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-size: 14px;
+                            margin-top: 10px;
+                        }
+
+                        .student-report-table th,
+                        .student-report-table td {
+                            border: 1px solid #ccc;
+                            padding: 8px;
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+
+                        .student-report-table th {
+                            background-color: #f0f0f0;
+                            font-weight: bold;
+                            font-size: 14px;
+                        }
+
+                        .student-report-table tr:nth-child(even) {
+                            background-color: #fcfcfc;
+                        }
+
+                        .student-report-image {
+                            width: 40px;
+                            height: 40px;
+                            object-fit: cover;
+                            border-radius: 5px;
+                        }
+
+                        .no-border {
+                            border: none !important;
+                        }
+
+                        .page-break {
+                            page-break-after: always;
+                        }
+                    </style>
+
+                    <div class="company-info text-center">
+                        <h2>
+                            <t t-esc="doc.env.company.name"/>
+                        </h2>
+                    </div>
+
+
+
                 <h2>Student List - Filtered</h2>
-                <p><strong>Shift:</strong> <span t-esc="doc.shift_id.name"/></p>
+                <p><strong>Shift:</strong> <span t-esc="doc.shift_id.shift_name"/></p>
                 <p><strong>Class:</strong> <span t-esc="doc.class_id.name"/></p>
                 <p><strong>Section:</strong> <span t-esc="doc.section_id.name"/></p>
 
@@ -14,12 +119,14 @@
                     ('section_id','=',doc.section_id.id)
                 ])"/>
 
-                <table class="table table-sm mt16">
-                    <thead>
+
+                    <table class="student-report-table">
+                        <thead>
                         <tr>
                             <th>Name</th>
                             <th>Roll</th>
                             <th>Phone</th>
+                            <th>photo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,6 +134,19 @@
                             <td><span t-esc="student.name"/></td>
                             <td><span t-esc="student.roll"/></td>
                             <td><span t-esc="student.phone"/></td>
+                                  <td>
+        <t t-if="student.photo">
+          <img
+            t-att-src="'data:image/png;base64,%s' % student.photo"
+            width="40" height="40"
+            style="object-fit: cover; border-radius: 5px;"
+          />
+        </t>
+        <t t-else="">
+          N/A
+        </t>
+      </td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -34,14 +154,15 @@
         </t>
     </template>
 
-    <!-- Report Action -->
-    <report
-        id="report_student_wizard_pdf"
-        model="library.student.wizard"
-        string="Student Filter PDF"
-        report_type="qweb-pdf"
-        name="students.report_student_wizard_pdf_template"
-        file="students.report_student_wizard_pdf_template"
-        print_report_name="'Student_Report_' + object.shift_id.name"
-    />
+    <record id="action_report_student" model="ir.actions.report">
+        <field name="name">Student Report</field>
+        <field name="model">library.student.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">students.report_student_wizard_pdf_template</field>
+        <field name="report_file">students.report_student_wizard_pdf_template</field>
+        <field name="binding_model_id" ref="students.model_library_student_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name"> 'Student Report - %s' % (object.shift_id.shift_name or '') </field>
+    </record>
+
 </odoo>

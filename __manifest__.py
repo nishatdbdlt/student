@@ -30,6 +30,7 @@ Long description of module's purpose
         'views/student.xml',
         'views/shift.xml',
         'views/section.xml',
+        'views/student_wizard_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

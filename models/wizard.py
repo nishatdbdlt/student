@@ -61,6 +61,6 @@ class LibraryStudentWizard(models.TransientModel):
                    record.students_ids = False
 
     def action_print_pdf(self):
-        return self.env.ref('students.report_student_wizard_pdf').report_action(self)
+        return self.env.ref('students.action_report_student').report_action(self)
 
 

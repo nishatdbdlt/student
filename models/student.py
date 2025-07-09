@@ -11,6 +11,9 @@ class SchoolStudent(models.Model):
     class_id = fields.Many2one('school.class', string="Class")
     section_id = fields.Many2one('school.section', string="Section")
     phone = fields.Char(string="Phone")
+    photo=fields.Binary(
+     string='photo'
+    )
     filter_id = fields.Many2one('library.student.filter', string='Filter Link')
 
 @api.onchange('shift_id')
