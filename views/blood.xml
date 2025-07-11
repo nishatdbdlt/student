@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit the original Student Filter wizard form -->
+    <record id="view_form_student_report_by_blood" model="ir.ui.view">
+        <field name="name">student.report.by.blood.wizard.form</field>
+        <field name="model">library.student.wizard</field>
+        <!-- replace with the correct module and original view ID -->
+        <field name="inherit_id" ref="students.view_form_library_student_filter"/>
+        <field name="arch" type="xml">
+            <!-- পুরো প্রথম গ্রুপটাকেই বদলাচ্ছে -->
+            <xpath expr="//form/group[1]" position="replace">
+                <group>
+                    <!-- 1. Shift -->
+                    <field name="shift_id"/>
+                    <!-- 2. Class (filtered by shift) -->
+                    <field name="class_id" domain="[('shift_id','=',shift_id)]"/>
+                    <!-- 3. Section (filtered by class) -->
+                    <field name="section_id" domain="[('class_id','=',class_id)]"/>
+                    <!-- 4. Blood Group -->
+                    <field name="blood_group"/>
+                </group>
+            </xpath>
+            <!-- Filtered Students গ্রুপ অপরিবর্তিত থাকবে -->
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_student_report_by_blood_wizard" model="ir.actions.act_window">
+        <field name="name">Student Report by Blood Group</field>
+        <field name="res_model">library.student.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_form_student_report_by_blood"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Ensure menu hierarchy exists -->
+    <menuitem id="menu_school_root" name="School Management"/>
+    <menuitem
+        id="menu_student_reports"
+        name="Student Reports"
+        parent="menu_school_root"
+        sequence="10"/>
+    <menuitem
+        id="menu_student_report_by_blood"
+        name="By Blood Group"
+        parent="menu_student_reports"
+        action="action_student_report_by_blood_wizard"
+        sequence="20"/>
+</odoo>

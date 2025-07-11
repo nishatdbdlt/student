@@ -31,6 +31,8 @@ Long description of module's purpose
         'views/shift.xml',
         'views/section.xml',
         'views/student_wizard_report.xml',
+        'views/blood.xml',
+        'views/hide.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

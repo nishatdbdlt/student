@@ -6,3 +6,4 @@ from . import wizard
 from . import student
 from  . import shift
 from . import student_class
+from . import blood

@@ -15,6 +15,13 @@ class SchoolStudent(models.Model):
      string='photo'
     )
     filter_id = fields.Many2one('library.student.filter', string='Filter Link')
+    blood_group = fields.Selection([
+        ('A+', 'A+'), ('A-', 'A-'),
+        ('B+', 'B+'), ('B-', 'B-'),
+        ('O+', 'O+'), ('O-', 'O-'),
+        ('AB+', 'AB+'), ('AB-', 'AB-'),
+    ], string='Blood Group', required=True)
+
 
 @api.onchange('shift_id')
 def _onchange_shift_id(self):
