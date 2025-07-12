@@ -1,15 +1,12 @@
 from odoo import models, fields, api
 
-class StudentReportByBlood(models.TransientModel):
-    _inherit = 'library.student.wizard'
-    _description = 'Student Report by Blood Group'
+class StudentFilterWizard(models.TransientModel):
+    _name = 'student.filter.wizard'
+    _description = 'Filter Students by Shift, Class, Section and Blood Group'
 
-    # পূর্বের shift/class/section ফিল্ড আর দরকার নেই, তাই False সেট করা হলো
-    shift_id = False
-    class_id = False
-    section_id = False
-
-    # নতুন ফিল্ড: রক্তের গ্রুপ
+    shift_id = fields.Many2one('school.shift', string='Shift', required=True)
+    class_id = fields.Many2one('school.class', string='Class', domain="[('shift_id','=',shift_id)]", required=True)
+    section_id = fields.Many2one('school.section', string='Section', domain="[('class_id','=',class_id)]", required=True)
     blood_group = fields.Selection([
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
@@ -17,17 +14,31 @@ class StudentReportByBlood(models.TransientModel):
         ('AB+', 'AB+'), ('AB-', 'AB-'),
     ], string='Blood Group', required=True)
 
-    @api.depends('blood_group')
-    def _compute_students(self):
-        for wiz in self:
-            if wiz.blood_group:
-                students = self.env['school.student'].search([
-                    ('blood_group', '=', wiz.blood_group),
-                ])
-                wiz.students_ids = students
-            else:
-                wiz.students_ids = False
+    student_ids = fields.Many2many(
+        'school.student', string='Filtered Students',
+        compute='_compute_students',
+        store=False
+    )
 
-    def action_print_pdf(self):
-        # XML-এ 'students.action_report_student_by_blood' নামে report action ডিফাইন করুন
-        return self.env.ref('students.action_report_student_by_blood').report_action(self)
+    @api.onchange('shift_id')
+    def _onchange_shift_id(self):
+        self.class_id = False
+        self.section_id = False
+
+    @api.onchange('class_id')
+    def _onchange_class_id(self):
+        self.section_id = False
+
+    @api.depends('shift_id', 'class_id', 'section_id', 'blood_group')
+    def _compute_students(self):
+        for record in self:
+            if record.shift_id and record.class_id and record.section_id and record.blood_group:
+                domain = [
+                    ('shift_id', '=', record.shift_id.id),
+                    ('class_id', '=', record.class_id.id),
+                    ('section_id', '=', record.section_id.id),
+                    ('blood_group', '=', record.blood_group)
+                ]
+                record.student_ids = self.env['school.student'].search(domain)
+            else:
+                record.student_ids = self.env['school.student'].browse([])  # empty recordset

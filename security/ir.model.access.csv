@@ -7,6 +7,4 @@ access_school_section,school.section,model_school_section,,1,1,1,1
 access_school_student,school.student,model_school_student,,1,1,1,1
 access_library_student_wizard,library.student.wizard,model_library_student_wizard,,1,1,1,0
 
-access_student_report_by_blood","access_student_report_by_blood","model_library_student_wizard","base.group_user",1,0,0,0
-
-
+access_student_filter_wizard,access_student_filter_wizard,model_student_filter_wizard,,1,0,0,0

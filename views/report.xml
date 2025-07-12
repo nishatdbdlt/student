@@ -6,12 +6,8 @@
       <form string="Student Filter">
         <group>
           <field name="shift_id"/>
-          <field name="class_id"
-                 attrs="{'readonly': [('shift_id', '=', False)]}"
-                 domain="[('shift_id', '=', shift_id)]"/>
-          <field name="section_id"
-                 attrs="{'readonly': [('class_id', '=', False)]}"
-                 domain="[('class_id', '=', class_id)]"/>
+          <field name="class_id" domain="[('shift_id', '=', shift_id)]"/>
+          <field name="section_id" domain="[('class_id', '=', class_id)]"/>
         </group>
         <group string="Filtered Students">
           <field name="students_ids">

@@ -1,49 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Inherit the original Student Filter wizard form -->
-    <record id="view_form_student_report_by_blood" model="ir.ui.view">
-        <field name="name">student.report.by.blood.wizard.form</field>
-        <field name="model">library.student.wizard</field>
-        <!-- replace with the correct module and original view ID -->
-        <field name="inherit_id" ref="students.view_form_library_student_filter"/>
-        <field name="arch" type="xml">
-            <!-- পুরো প্রথম গ্রুপটাকেই বদলাচ্ছে -->
-            <xpath expr="//form/group[1]" position="replace">
-                <group>
-                    <!-- 1. Shift -->
-                    <field name="shift_id"/>
-                    <!-- 2. Class (filtered by shift) -->
-                    <field name="class_id" domain="[('shift_id','=',shift_id)]"/>
-                    <!-- 3. Section (filtered by class) -->
-                    <field name="section_id" domain="[('class_id','=',class_id)]"/>
-                    <!-- 4. Blood Group -->
-                    <field name="blood_group"/>
-                </group>
-            </xpath>
-            <!-- Filtered Students গ্রুপ অপরিবর্তিত থাকবে -->
-        </field>
-    </record>
+  <!-- Wizard Form View -->
+  <record id="view_student_filter_wizard_form" model="ir.ui.view">
+    <field name="name">student.filter.wizard.form</field>
+    <field name="model">student.filter.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Filter Students">
+        <group>
+          <field name="shift_id"/>
+          <field name="class_id"/>
+          <field name="section_id"/>
+          <field name="blood_group"/>
+        </group>
+        <group string="Filtered Students">
+          <field name="student_ids" options="{'no_create': True}">
+            <tree>
+              <field name="name"/>
+              <field name="roll"/>
+              <field name="phone"/>
+              <field name="blood_group"/>
+            </tree>
+          </field>
+        </group>
+        <footer>
+          <button string="Close" class="btn-secondary" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
 
-    <!-- Action to open the wizard -->
-    <record id="action_student_report_by_blood_wizard" model="ir.actions.act_window">
-        <field name="name">Student Report by Blood Group</field>
-        <field name="res_model">library.student.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="view_form_student_report_by_blood"/>
-        <field name="target">new</field>
-    </record>
+  <!-- Action to open the wizard -->
+  <record id="action_student_filter_wizard" model="ir.actions.act_window">
+    <field name="name">Student Filter</field>
+    <field name="res_model">student.filter.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_student_filter_wizard_form"/>
+    <field name="target">current</field>
+  </record>
 
-    <!-- Ensure menu hierarchy exists -->
-    <menuitem id="menu_school_root" name="School Management"/>
-    <menuitem
-        id="menu_student_reports"
-        name="Student Reports"
-        parent="menu_school_root"
-        sequence="10"/>
-    <menuitem
-        id="menu_student_report_by_blood"
-        name="By Blood Group"
-        parent="menu_student_reports"
-        action="action_student_report_by_blood_wizard"
-        sequence="20"/>
+  <!-- Menuitem to access the wizard -->
+  <menuitem id="menu_school_management" name="School Management"/>
+  <menuitem id="menu_student_filter" name="Student Filter" parent="menu_school_management" action="action_student_filter_wizard"/>
 </odoo>
