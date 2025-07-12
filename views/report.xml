@@ -4,6 +4,14 @@
     <field name="model">library.student.wizard</field>
     <field name="arch" type="xml">
       <form string="Student Filter">
+        <header>
+          <button name="action_print_pdf"
+                  string="Print PDF"
+                  type="object"
+                  class="btn-primary"
+                  icon="fa-print"/>
+        </header>
+
         <group>
           <field name="shift_id"/>
           <field name="class_id" domain="[('shift_id', '=', shift_id)]"/>

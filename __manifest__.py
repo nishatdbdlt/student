@@ -33,6 +33,7 @@ Long description of module's purpose
         'views/student_wizard_report.xml',
         'views/blood.xml',
         'views/hide.xml',
+        'views/blood_group.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

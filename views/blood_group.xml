@@ -1,0 +1,65 @@
+<odoo>
+  <!-- QWeb PDF Template -->
+  <template id="report_filtered_students_template">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <t t-foreach="docs" t-as="doc">
+          <div class="page">
+            <h2>Filtered Students Report</h2>
+            <p>
+              <strong>Shift:</strong>
+              <t t-esc="doc.shift_id.shift_name"/> |
+              <strong>Class:</strong>
+              <t t-esc="doc.class_id.name"/> |
+              <strong>Section:</strong>
+              <t t-esc="doc.section_id.name"/> |
+              <strong>Blood Group:</strong>
+              <t t-esc="doc.blood_group"/>
+            </p>
+            <br/>
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Roll</th>
+                  <th>Phone</th>
+                  <th>Shift</th>
+                  <th>Class</th>
+                  <th>Section</th>
+                  <th>Blood</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-foreach="doc.student_ids" t-as="student">
+                  <tr>
+                    <td><t t-esc="student.name"/></td>
+                    <td><t t-esc="student.roll"/></td>
+                    <td><t t-esc="student.phone"/></td>
+                    <td><t t-esc="student.shift_id.shift_name"/></td>
+                    <td><t t-esc="student.class_id.name"/></td>
+                    <td><t t-esc="student.section_id.name"/></td>
+                    <td><t t-esc="student.blood_group"/></td>
+                  </tr>
+                </t>
+              </tbody>
+            </table>
+              <br/>
+            <p>
+              <strong>Total Students:</strong>
+              <t t-esc="len(doc.student_ids)"/>
+            </p>
+          </div>
+        </t>
+      </t>
+    </t>
+  </template>
+
+  <!-- Report Action Definition -->
+  <record id="action_report_filtered_students" model="ir.actions.report">
+    <field name="name">Filtered Students Report</field>
+    <field name="model">student.filter.wizard</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">students.report_filtered_students_template</field>
+    <field name="report_file">students.report_filtered_students_template</field>
+  </record>
+</odoo>

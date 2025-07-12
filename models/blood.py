@@ -42,3 +42,7 @@ class StudentFilterWizard(models.TransientModel):
                 record.student_ids = self.env['school.student'].search(domain)
             else:
                 record.student_ids = self.env['school.student'].browse([])  # empty recordset
+
+    def action_print_pdf(self):
+        return self.env.ref('students.action_report_filtered_students').report_action(self)
+

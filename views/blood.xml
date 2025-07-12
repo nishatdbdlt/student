@@ -5,12 +5,21 @@
     <field name="model">student.filter.wizard</field>
     <field name="arch" type="xml">
       <form string="Filter Students">
+        <header>
+          <button name="action_print_pdf"
+                  string="Print PDF"
+                  type="object"
+                  class="btn-primary"
+                  icon="fa-print"/>
+        </header>
+
         <group>
           <field name="shift_id"/>
           <field name="class_id"/>
           <field name="section_id"/>
           <field name="blood_group"/>
         </group>
+
         <group string="Filtered Students">
           <field name="student_ids" options="{'no_create': True}">
             <tree>
@@ -21,6 +30,7 @@
             </tree>
           </field>
         </group>
+
         <footer>
           <button string="Close" class="btn-secondary" special="cancel"/>
         </footer>
@@ -38,6 +48,5 @@
   </record>
 
   <!-- Menuitem to access the wizard -->
-  <menuitem id="menu_school_management" name="School Management"/>
-  <menuitem id="menu_student_filter" name="Student Filter" parent="menu_school_management" action="action_student_filter_wizard"/>
+  <menuitem id="menu_student_filter" name="Student Filter_blood" parent="menu_school_root" action="action_student_filter_wizard"/>
 </odoo>
