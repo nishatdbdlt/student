@@ -14,33 +14,31 @@
               ('section_id','=',doc.section_id.id)
             ])"/>
 
-          <div class="page container py-3" style="font-family: Arial, sans-serif;"/>
+          <div class="page container py-3" style="font-family: Arial, sans-serif;">
 
             <!-- Header: logo + company name in one line -->
-            <div class="row align-items-center border-bottom pt-2 pb-4"
-                   style="position: relative; top: -30px;">
-              <!-- Logo Column: auto width -->
-              <div class="col-auto">
-                 <t t-if="env.company.logo">
-                        <img t-att-src="'data:image/png;base64,' + env.company.logo.decode('utf-8')"
-                             alt="Company Logo"
-                             style="height: 150px; margin-bottom: 5px;"/>
-                    </t>
-                    <t t-else="">
-                        <div style="height: 70px; margin-bottom: 5px;"></div>
-                    </t>
-              </div>
+         <!-- Header: logo left + company info center -->
+<div class="d-flex justify-content-start align-items-center mb-4" style="position: relative;">
+  <!-- Logo -->
+  <div style="flex: 0 0 auto; margin-right: 20px;">
+    <t t-if="company.logo">
+      <img t-att-src="'data:image/png;base64,' + company.logo.decode('utf-8')"
+           alt="Company Logo"
+           style="height: 100px;"/>
+    </t>
+  </div>
 
-              <!-- Company Info Column: center-aligned -->
-              <div class="col text-center">
-                <h2 class="h4 mb-1"><t t-esc="company.name"/></h2>
-                <p class="small text-muted mb-0">
-                  <t t-esc="company.street"/>
-<!--                  <t t-if="company.street2">, <t t-esc="company.street2"/></t>,-->
-                  <t t-esc="company.phone"/> – <t t-esc="company.email"/><br/>
-                  <t t-esc="company.state_id.name"/>, <t t-esc="company.country_id.name"/>
-                </p>
-              </div>
+  <!-- Company Info: centered absolutely -->
+  <div style="position: absolute; left: 0; right: 0; text-align: center;">
+    <h2 class="h4 mb-1"><t t-esc="company.name"/></h2>
+    <p class="small text-muted mb-0">
+      <t t-esc="company.street"/>
+      <t t-if="company.street2">, <t t-esc="company.street2"/></t><br/>
+      <t t-esc="company.phone"/> – <t t-esc="company.email"/><br/>
+      <t t-esc="company.state_id.name"/>, <t t-esc="company.country_id.name"/>
+    </p>
+  </div>
+</div>
 
 
             <!-- Section Info Banner -->
