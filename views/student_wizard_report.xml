@@ -1,168 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
-    <template id="report_student_wizard_pdf_template">
-        <t t-call="web.html_container">
-            <t t-set="doc" t-value="docs"/>
+  <!-- QWeb PDF Template -->
+  <template id="report_student_wizard_pdf_template">
+    <t t-call="web.html_container">
+      <t t-call="web.external_layout">
+        <!-- Loop through each wizard record -->
+        <t t-foreach="docs" t-as="doc">
+          <!-- Define env objects -->
+          <t t-set="company" t-value="env.company"/>
+          <t t-set="students" t-value="env['school.student'].search([
+              ('shift_id','=',doc.shift_id.id),
+              ('class_id','=',doc.class_id.id),
+              ('section_id','=',doc.section_id.id)
+            ])"/>
 
-                <div class="page">
+          <div class="page container py-3" style="font-family: Arial, sans-serif;"/>
 
-                    <style>
-                        body {
-                            font-family: 'Arial', sans-serif;
-                            color: #333;
-                        }
+            <!-- Header: logo + company name in one line -->
+            <div class="row align-items-center border-bottom pt-2 pb-4"
+                   style="position: relative; top: -30px;">
+              <!-- Logo Column: auto width -->
+              <div class="col-auto">
+                 <t t-if="env.company.logo">
+                        <img t-att-src="'data:image/png;base64,' + env.company.logo.decode('utf-8')"
+                             alt="Company Logo"
+                             style="height: 150px; margin-bottom: 5px;"/>
+                    </t>
+                    <t t-else="">
+                        <div style="height: 70px; margin-bottom: 5px;"></div>
+                    </t>
+              </div>
 
-                        .report-container {
-                            padding: 20px;
-                        }
-
-                        .text-center {
-                            text-align: center;
-                        }
-
-                        .company-header {
-                            text-align: center;
-                            margin-bottom: 20px;
-                        }
-
-                        .company-header img {
-                            height: 70px;
-                            margin-bottom: 5px;
-                        }
-
-                        .company-header h1 {
-                            font-size: 30px;
-                            margin: 5px 0;
-                        }
-
-                        .company-header p {
-                            font-size: 16px;
-                            margin: 2px 0;
-                            color: #666;
-                        }
-
-                        .section-info {
-                            text-align: center;
-                            font-size: 18px;
-                            margin: 10px 0 25px;
-                            border-top: 1px solid #ccc;
-                            border-bottom: 1px solid #ccc;
-                            padding: 10px 0;
-                            background-color: #f9f9f9;
-                        }
-
-                        .total-student {
-                            font-size: 16px;
-                            text-align: right;
-                            margin: 10px 0;
-                            font-weight: bold;
-                        }
-
-                        .student-report-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            font-size: 14px;
-                            margin-top: 10px;
-                        }
-
-                        .student-report-table th,
-                        .student-report-table td {
-                            border: 1px solid #ccc;
-                            padding: 8px;
-                            text-align: center;
-                            vertical-align: middle;
-                        }
-
-                        .student-report-table th {
-                            background-color: #f0f0f0;
-                            font-weight: bold;
-                            font-size: 14px;
-                        }
-
-                        .student-report-table tr:nth-child(even) {
-                            background-color: #fcfcfc;
-                        }
-
-                        .student-report-image {
-                            width: 40px;
-                            height: 40px;
-                            object-fit: cover;
-                            border-radius: 5px;
-                        }
-
-                        .no-border {
-                            border: none !important;
-                        }
-
-                        .page-break {
-                            page-break-after: always;
-                        }
-                    </style>
-
-                    <div class="company-info text-center">
-                        <h2>
-                            <t t-esc="doc.env.company.name"/>
-                        </h2>
-                    </div>
+              <!-- Company Info Column: center-aligned -->
+              <div class="col text-center">
+                <h2 class="h4 mb-1"><t t-esc="company.name"/></h2>
+                <p class="small text-muted mb-0">
+                  <t t-esc="company.street"/>
+<!--                  <t t-if="company.street2">, <t t-esc="company.street2"/></t>,-->
+                  <t t-esc="company.phone"/> – <t t-esc="company.email"/><br/>
+                  <t t-esc="company.state_id.name"/>, <t t-esc="company.country_id.name"/>
+                </p>
+              </div>
 
 
-
-                <h2>Student List - Filtered</h2>
-                <p><strong>Shift:</strong> <span t-esc="doc.shift_id.shift_name"/></p>
-                <p><strong>Class:</strong> <span t-esc="doc.class_id.name"/></p>
-                <p><strong>Section:</strong> <span t-esc="doc.section_id.name"/></p>
-
-                <t t-set="students" t-value="docs.env['school.student'].search([
-                    ('shift_id','=',doc.shift_id.id),
-                    ('class_id','=',doc.class_id.id),
-                    ('section_id','=',doc.section_id.id)
-                ])"/>
-
-
-                    <table class="student-report-table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Roll</th>
-                            <th>Phone</th>
-                            <th>photo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr t-foreach="students" t-as="student">
-                            <td><span t-esc="student.name"/></td>
-                            <td><span t-esc="student.roll"/></td>
-                            <td><span t-esc="student.phone"/></td>
-                                  <td>
-        <t t-if="student.photo">
-          <img
-            t-att-src="'data:image/png;base64,%s' % student.photo"
-            width="40" height="40"
-            style="object-fit: cover; border-radius: 5px;"
-          />
-        </t>
-        <t t-else="">
-          N/A
-        </t>
-      </td>
-
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Section Info Banner -->
+            <div class="row mb-3">
+              <div class="col text-center bg-light py-2">
+                <strong>Student List –</strong>
+                <span>Shift: <t t-esc="doc.shift_id.shift_name"/></span> |
+                <span>Class: <t t-esc="doc.class_id.name"/></span> |
+                <span>Section: <t t-esc="doc.section_id.name"/></span>
+              </div>
             </div>
+
+            <!-- Students Table -->
+            <div class="table-responsive mb-3">
+              <table class="table table-sm table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Roll</th>
+                    <th>Phone</th>
+                    <th>Photo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="students" t-as="student">
+                    <tr>
+                      <td><t t-esc="student.name"/></td>
+                      <td><t t-esc="student.roll"/></td>
+                      <td><t t-esc="student.phone"/></td>
+                      <td class="text-center">
+                        <t t-if="student.photo">
+                          <img
+                            t-att-src="'data:image/png;base64,%s' % student.photo"
+                            class="img-fluid rounded"
+                            style="max-height: 40px; max-width: 40px;"
+                          />
+                        </t>
+                        <t t-else="">N/A</t>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Total Students -->
+            <div class="row">
+              <div class="col text-right">
+                <p class="mb-0"><strong>Total Students:</strong> <t t-esc="len(students)"/></p>
+              </div>
+            </div>
+
+          </div>
         </t>
-    </template>
+      </t>
+    </t>
+  </template>
 
-    <record id="action_report_student" model="ir.actions.report">
-        <field name="name">Student Report</field>
-        <field name="model">library.student.wizard</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">students.report_student_wizard_pdf_template</field>
-        <field name="report_file">students.report_student_wizard_pdf_template</field>
-        <field name="binding_model_id" ref="students.model_library_student_wizard"/>
-        <field name="binding_type">report</field>
-        <field name="print_report_name"> 'Student Report - %s' % (object.shift_id.shift_name or '') </field>
-    </record>
-
+  <!-- Report Action -->
+  <record id="action_report_student" model="ir.actions.report">
+    <field name="name">Student Report</field>
+    <field name="model">library.student.wizard</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">students.report_student_wizard_pdf_template</field>
+    <field name="report_file">students.report_student_wizard_pdf_template</field>
+    <field name="binding_model_id" ref="students.model_library_student_wizard"/>
+    <field name="binding_type">report</field>
+    <field name="print_report_name">'Student Report - %s' % (object.shift_id.shift_name or '')</field>
+  </record>
 </odoo>
