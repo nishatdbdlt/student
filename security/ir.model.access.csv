@@ -8,3 +8,11 @@ access_school_student,school.student,model_school_student,,1,1,1,1
 access_library_student_wizard,library.student.wizard,model_library_student_wizard,,1,1,1,1
 
 access_student_filter_wizard,access_student_filter_wizard,model_student_filter_wizard,,1,1,1,1
+
+
+
+access_class_report_wizard,access.class.report.wizard,model_class_report_wizard,,1,1,1,1
+access_class_report_line,access.class.report.line,model_class_report_line,,1,1,1,1
+
+access_school_subject,access.school.subject,model_school_subject,,1,1,1,1
+access_school_teacher,access.school.teacher,model_school_teacher,,1,1,1,1

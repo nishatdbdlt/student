@@ -34,6 +34,10 @@ Long description of module's purpose
         'views/blood.xml',
         'views/hide.xml',
         'views/blood_group.xml',
+        'views/class_report.xml',
+        'views/teacher.xml',
+        'views/subject.xml',
+        'views/class_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
