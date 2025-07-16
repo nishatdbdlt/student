@@ -30,23 +30,27 @@ class ClassReportWizard(models.TransientModel):
 
     @api.onchange('class_id', 'section_id')
     def _compute_lines(self):
-        # নাম পাল্টে দিলাম _compute_lines
         self.line_ids = [(5, 0, 0)]
         if self.class_id and self.section_id:
             subjects = self.env['school.subject'].search([
-                ('class_id',   '=', self.class_id.id),
+                ('class_id', '=', self.class_id.id),
                 ('section_id', '=', self.section_id.id)
             ])
             lines = [(0, 0, {
                 'subject_id': sub.id,
-                'teacher_id': sub.teacher_id.id,
+                'teacher_id': sub.teacher_id.id if sub.teacher_id else False,
             }) for sub in subjects]
             self.line_ids = lines
 
-
+    # def action_get_report(self):
+    #     # লাইন গুলো আপডেট
+    #     self._compute_lines()
+    #     # PDF রিপোর্ট রিটার্ন
+    #     return self.env.ref('students.report_summary_report').report_action(self)
 
     def action_get_report(self):
-        # লাইন গুলো আপডেট
         self._compute_lines()
-        # PDF রিপোর্ট রিটার্ন
-        return self.env.ref('students.report_summary').report_action(self)
+        return self.env.ref('students.action_report_class_teacher').report_action(self)
+
+
+

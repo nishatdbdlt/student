@@ -38,6 +38,7 @@ Long description of module's purpose
         'views/teacher.xml',
         'views/subject.xml',
         'views/class_report.xml',
+        'views/class_teacher.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

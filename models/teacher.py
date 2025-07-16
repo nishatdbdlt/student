@@ -7,5 +7,6 @@ class SchoolTeacher(models.Model):
 
     name        = fields.Char(string='Teacher Name', required=True)
     phone       = fields.Char(string='Phone')
-    image       = fields.Binary(string='Photo')
+    photo       = fields.Binary(string='Photo')
+    email=fields.Char(string='email')
     subject_ids = fields.One2many('school.subject', 'teacher_id', string='Subjects')

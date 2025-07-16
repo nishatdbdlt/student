@@ -23,7 +23,8 @@
           <group>
             <field name="name"/>
             <field name="phone"/>
-            <field name="image" widget="image"/>
+            <field name ='email'/>
+            <field name="photo" widget="image"/>
           </group>
           <notebook>
             <page string="Subjects">
