@@ -99,35 +99,10 @@
             </div>
           </div>
 
-          <!-- Fee and Class Info with more gap -->
-          <div style="display: flex; gap: 30px; margin-top: 50px;">
-            <div style="flex: 1;">
-              <div style="background: #2c5f2d; color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0;">
-                <h5 style="margin: 0;">Fee Details</h5>
-              </div>
-              <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 150px;">
-                <p style="text-align: center; color: #999;">Fee details will be displayed here</p>
-              </div>
-            </div>
 
-            <div style="flex: 1;">
-              <div style="background: #2c5f2d; color: white; padding: 15px; text-align: center; border-radius: 10px 10px 0 0;">
-                <h5 style="margin: 0;">Class Information</h5>
-              </div>
-              <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 150px;">
-                <p style="text-align: center; color: #999;">Class information will be displayed here</p>
-              </div>
-            </div>
-          </div>
 
           <!-- Footer -->
-          <div style="text-align: center; margin-top: 40px; color: #999; font-size: 12px;">
-            <hr style="margin: 20px 0; border: none; height: 1px; background: #e9ecef;"/>
-            <p style="margin: 0;">
-              <strong t-esc="school"/> | 📞 01328-714057, 01328-714058 | 🌐 www.gsrscn.com
-            </p>
-            <p style="margin: 5px 0 0;">Generated on: <span t-esc="datetime.datetime.now().strftime('%B %d, %Y at %I:%M %p')"/></p>
-          </div>
+
 
         </div>
       </t>
