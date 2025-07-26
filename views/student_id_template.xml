@@ -1,19 +1,48 @@
 <odoo>
   <template id="student_id_card_template">
     <t t-call="web.basic_layout">
-      <div style="width:3.4in; height:2.1in; border:1px solid black; padding:8px; font-size:10px;">
-        <div style="text-align:center; font-weight:bold; font-size:12px;">
-          <t t-if="res_company.logo">
-            <img t-att-src="'data:image/png;base64,%s' % res_company.logo" style="height:30px;"/><br/>
-          </t>
-          <t t-esc="res_company.name"/>
-        </div>
-        <hr/>
-        <div style="margin-left:10px;">
-          <strong>Name:</strong> <t t-esc="doc.student_id.name"/><br/>
-          <strong>Class:</strong> <t t-esc="doc.student_id.class_id._name"/><br/>
-          <strong>Section:</strong> <t t-esc="doc.student_id.section_id.name"/><br/>
-          <strong>Shift:</strong> <t t-esc="doc.student_id.shift_id.name"/><br/>
+      <t t-set="doc" t-value="docs[0]"/>
+      <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+
+        <!-- ID Card Container -->
+        <div class="card shadow-sm border" style="width: 85.6mn; height: 54mm; padding: 8px; font-size: 10px;">
+          <div class="card-body p-1 text-center">
+
+            <!-- School Logo and Name (moved slightly down) -->
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+              <t t-if="res_company.logo">
+                <img t-att-src="'data:image/png;base64,%s' % res_company.logo" class="mb-1" style="height: 30px;" />
+              </t>
+              <div class="fw-bold mt-1" style="font-size: 12px;">
+                <t t-esc="res_company.name"/>
+              </div>
+            </div>
+
+            <hr class="my-1"/>
+
+            <!-- Student Photo -->
+            <t t-if="doc.student_id.photo">
+              <img t-att-src="'data:image/png;base64,%s' % doc.student_id.photo"
+                   class="rounded-circle"
+                   style="height: 70px; width: 70px; object-fit: cover; margin: 6px 0;"/>
+            </t>
+
+            <!-- Student Info - shifted down -->
+            <div class="text-start mt-2" style="padding-left: 8px;">
+              <p class="mb-1"><strong>Name:</strong> <t t-esc="doc.student_id.name"/></p>
+              <p class="mb-1"><strong>Roll:</strong> <t t-esc="doc.student_id.roll"/></p>
+              <p class="mb-1"><strong>Class:</strong> <t t-esc="doc.student_id.class_id.name"/></p>
+              <p class="mb-1"><strong>Section:</strong> <t t-esc="doc.student_id.section_id.name"/></p>
+              <p class="mb-1"><strong>Shift:</strong> <t t-esc="doc.student_id.shift_id.shift_name"/></p>
+            </div>
+
+            <!-- Footer -->
+            <hr class="my-2"/>
+            <div class="text-center mt-1" style="font-size: 8px; color: #555;">
+              Powered by Your School ERP
+            </div>
+
+          </div>
         </div>
       </div>
     </t>
